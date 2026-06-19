@@ -30,7 +30,7 @@ class SendProductNotification implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->product->loadMissing('category');
-        Mail::to('kawshikbss@gmail.com')->send(new ProductNotificationMail($this->product, $this->action));
+        $this->product->loadMissing('user', 'category');
+        Mail::to($this->product->user->email)->send(new ProductNotificationMail($this->product, $this->action));
     }
 }
