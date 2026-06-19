@@ -11,7 +11,8 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $products = Product::paginate(10);
+        $userId = Auth::id();
+        $products = Product::where('user_id', $userId)->with('category')->paginate(10);
         return response()->json(['success' => true, 'data' => $products]);
     }
 
