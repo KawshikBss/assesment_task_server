@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\SendProductNotification;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -22,6 +23,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'category_id' => 'nullable|exists:categories,id',
         ]);
+        $data['user_id'] = Auth::id();
         $product = Product::create($data);
         SendProductNotification::dispatch($product, 'created');
         return response()->json([
@@ -41,6 +43,9 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        if ($product->user_id !== Auth::id()) {
+            return response()->json(['success' => 'error', 'message' => 'Unauthorized!']);
+        }
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
