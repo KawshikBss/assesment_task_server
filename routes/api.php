@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +19,4 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::resource('categories', CategoryController::class)->middleware('auth:sanctum');
+Route::resource('products', ProductController::class)->middleware('auth:sanctum');
