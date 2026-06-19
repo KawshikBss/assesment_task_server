@@ -16,13 +16,15 @@ class ProductNotificationMail extends Mailable
     use Queueable, SerializesModels;
 
     public Product $product;
+    public string $action;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Product $product)
+    public function __construct(Product $product, string $action)
     {
         $this->product = $product;
+        $this->action = $action;
     }
 
     /**
@@ -31,7 +33,7 @@ class ProductNotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Product Notification Mail',
+            subject: "Product {$this->action}.",
         );
     }
 
@@ -41,7 +43,7 @@ class ProductNotificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.product-notification-mail',
         );
     }
 
