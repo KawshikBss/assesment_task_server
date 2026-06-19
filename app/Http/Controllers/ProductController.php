@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendProductNotification;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,7 @@ class ProductController extends Controller
             'category_id' => 'nullable|exists:categories,id',
         ]);
         $product = Product::create($data);
+        SendProductNotification::dispatch($product, 'created');
         return response()->json([
             'success' => true,
             'message' => 'Product created successfully!',
@@ -46,6 +48,7 @@ class ProductController extends Controller
             'category_id' => 'nullable|exists:categories,id',
         ]);
         $product->update($data);
+        SendProductNotification::dispatch($product, 'updated');
         return response()->json([
             'success' => true,
             'message' => 'Product updated successfully!',
