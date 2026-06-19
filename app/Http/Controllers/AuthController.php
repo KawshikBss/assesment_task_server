@@ -49,7 +49,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return response()->json(['success' => false, 'message' => 'Invalid credentials!'], 401);
+        return response()->json(['success' => false, 'message' => 'Invalid credentials!']);
     }
 
     public function user()
